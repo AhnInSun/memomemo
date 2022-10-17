@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:memomemo/database/db.dart';
 import 'package:memomemo/database/memo.dart';
+import 'package:crypto/crypto.dart';
 
 class EditPage extends StatelessWidget {
   EditPage({Key? key}) : super(key: key);
@@ -61,7 +63,7 @@ class EditPage extends StatelessWidget {
     DBHelper sd = DBHelper();
 
     var fido = Memo(
-      id: 4,
+      id: StrSha512(DateTime.now().toString()),
       title: this.title,
       text: this.text,
       createTime: DateTime.now().toString(),
@@ -70,5 +72,11 @@ class EditPage extends StatelessWidget {
 
     await sd.insertMemo(fido);
     print(await sd.memos());
+  }
+
+  String StrSha512(String text) {
+    var bytes = utf8.encode(text); // data being hashed
+    var digest = sha512.convert(bytes);
+    return digest.toString();
   }
 }
