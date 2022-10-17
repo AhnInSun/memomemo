@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:memomemo/database/db.dart';
+import 'package:memomemo/database/memo.dart';
 
 class EditPage extends StatelessWidget {
-  const EditPage({Key? key}) : super(key: key);
+  EditPage({Key? key}) : super(key: key);
+
+  String title = '';
+  String text = '';
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +18,7 @@ class EditPage extends StatelessWidget {
               icon: Icon(Icons.delete)
           ),
           IconButton(
-              onPressed: (){},
+              onPressed: saveDB,
               icon: Icon(Icons.save)
           )
         ],
@@ -23,6 +28,7 @@ class EditPage extends StatelessWidget {
         child: Column(
           children: [
             TextField(
+              onChanged: (String title){ this.title = title; },
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
               keyboardType: TextInputType.multiline,
               maxLines: null,
@@ -36,6 +42,7 @@ class EditPage extends StatelessWidget {
               height: 30,
             ),
             TextField(
+              onChanged: (String text){ this.text = text; },
               keyboardType: TextInputType.multiline,
               maxLines: null,
               //obscureText: true,
@@ -48,5 +55,20 @@ class EditPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> saveDB() async {
+    DBHelper sd = DBHelper();
+
+    var fido = Memo(
+      id: 4,
+      title: this.title,
+      text: this.text,
+      createTime: DateTime.now().toString(),
+      editTime: DateTime.now().toString(),
+    );
+
+    await sd.insertMemo(fido);
+    print(await sd.memos());
   }
 }
