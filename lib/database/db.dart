@@ -8,7 +8,7 @@ class DBHelper {
   var _db;
 
   Future<Database> get database async {
-    if ( _db != null ) return _db;
+    if (_db != null) return _db;
     _db = openDatabase(
       // 데이터베이스 경로를 지정합니다. 참고: `path` 패키지의 `join` 함수를 사용하는 것이
       // 각 플랫폼 별로 경로가 제대로 생성됐는지 보장할 수 있는 가장 좋은 방법입니다.
@@ -24,7 +24,6 @@ class DBHelper {
       version: 1,
     );
     return _db;
-
   }
 
   Future<void> insertMemo(Memo memo) async {
@@ -72,7 +71,7 @@ class DBHelper {
     );
   }
 
-  Future<void> deleteMemo(int id) async {
+  Future<void> deleteMemo(String id) async {
     final db = await database;
 
     // 데이터베이스에서 Memo를 삭제합니다.
@@ -85,4 +84,3 @@ class DBHelper {
     );
   }
 }
-
