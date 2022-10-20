@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:memomemo/screens/edit.dart';
 import 'package:memomemo/database/memo.dart';
 import 'package:memomemo/database/db.dart';
+import 'package:memomemo/screens/view.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -15,6 +16,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String deleteId = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,19 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
         icon: Icon(Icons.add),
       ),
     );
-  }
-
-  List<Widget> LoadMemo() {
-    List<Widget> memoList = [];
-    memoList.add(Container(
-      color: Colors.purpleAccent,
-      height: 100,
-    ));
-    memoList.add(Container(
-      color: Colors.redAccent,
-      height: 100,
-    ));
-    return memoList;
   }
 
   Future<List<Memo>> loadMemo() async {
@@ -130,7 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
           itemBuilder: (context, index) {
             Memo memo = snap.data![index];
             return InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => ViewPage(id: memo.id)));
+              },
               onLongPress: () {
                 setState(() {
                   deleteId = memo.id;
@@ -177,8 +171,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         Text(
                           "최근수정: " + memo.editTime.split('.')[0],
-                          style: TextStyle(
-                              fontSize: 12, color: Colors.grey[500]),
+                          style:
+                              TextStyle(fontSize: 12, color: Colors.grey[500]),
                           textAlign: TextAlign.end,
                         ),
                       ],
